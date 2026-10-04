@@ -1,0 +1,25 @@
+services:
+  netalertx:
+    image: ghcr.io/netalertx/netalertx:latest
+    container_name: netalertx
+    restart: unless-stopped
+    ports:
+      - "20211:20211"
+      - "20212:20212"
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+      - NET_BIND_SERVICE
+    environment:
+      - TZ=America/Guatemala
+      - PORT=20211
+      - GRAPHQL_PORT=20212
+      - LISTEN_ADDR=0.0.0.0
+      - NETALERTX_DEBUG=0
+      - SUBNETS=192.168.1.0/24
+    volumes:
+      - netalertx_data:/data
+      - ./server/plugins:/app/server/plugins
+
+volumes:
+  netalertx_data:
